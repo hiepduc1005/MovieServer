@@ -27,5 +27,20 @@ public interface MovieService {
 	List<Movie> getMovieByTrailer(Integer trailerId);
 	
 	List<Movie> get5MovieMostRatedNotAnime();
-
+	
+	List<Movie> getTop10MovieRate();
+	
+	List<Movie> getAnimeMovies();
+	
+	List<Movie> getActionMovies();
+	
+	List<Movie> getSciFiMovie();
+	
+	List<Movie> getDramaMovie();
+	
+	List<Movie> getComedyMovie();
+	
+	List<Movie> getMost5ByGenre(String genre);
+	
+	List<Movie> getMoviesByGenre(String genre);
 }

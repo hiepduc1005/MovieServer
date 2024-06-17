@@ -124,4 +124,107 @@ public class DefaultMovieService implements MovieService {
 		return movies;
 	}
 
+	@Override
+	public List<Movie> getTop10MovieRate() {
+		return movieRepository.findAll()
+				.stream().sorted((m1, m2) -> Double.compare(m2.getRating().doubleValue(), m1.getRating().doubleValue()))
+				.limit(14).toList();
+	}
+
+	@Override
+	public List<Movie> getAnimeMovies() {
+		List<Movie> movies = movieRepository.findAll();
+		movies = movies.stream()
+		            .filter(movie -> movie.getGenres().stream()
+		                    .anyMatch(genre -> genre.getName().equalsIgnoreCase("anime")))
+		            .sorted((m1, m2) -> Double.compare(m2.getRating().doubleValue(), m1.getRating().doubleValue())) 
+		            .limit(7) 
+		            .collect(Collectors.toList());
+		
+		
+		return movies;
+	}
+
+	@Override
+	public List<Movie> getActionMovies() {
+		List<Movie> movies = movieRepository.findAll();
+		movies = movies.stream()
+		            .filter(movie -> movie.getGenres().stream()
+		                    .anyMatch(genre -> genre.getName().equalsIgnoreCase("action")))
+		            .sorted((m1, m2) -> Double.compare(m2.getRating().doubleValue(), m1.getRating().doubleValue())) 
+		            .limit(7) 
+		            .collect(Collectors.toList());
+		
+		
+		return movies;
+	}
+
+	@Override
+	public List<Movie> getDramaMovie() {
+		List<Movie> movies = movieRepository.findAll();
+		movies = movies.stream()
+		            .filter(movie -> movie.getGenres().stream()
+		                    .anyMatch(genre -> genre.getName().equalsIgnoreCase("drama")))
+		            .sorted((m1, m2) -> Double.compare(m2.getRating().doubleValue(), m1.getRating().doubleValue())) 
+		            .limit(7) 
+		            .collect(Collectors.toList());
+		
+		
+		return movies;
+	}
+
+	@Override
+	public List<Movie> getSciFiMovie() {
+		List<Movie> movies = movieRepository.findAll();
+		movies = movies.stream()
+		            .filter(movie -> movie.getGenres().stream()
+		                    .anyMatch(genre -> genre.getName().equalsIgnoreCase("Sci-Fi")))
+		            .sorted((m1, m2) -> Double.compare(m2.getRating().doubleValue(), m1.getRating().doubleValue())) 
+		            .limit(7) 
+		            .collect(Collectors.toList());
+		
+		
+		return movies;
+	}
+
+	@Override
+	public List<Movie> getComedyMovie() {
+		List<Movie> movies = movieRepository.findAll();
+		movies = movies.stream()
+		            .filter(movie -> movie.getGenres().stream()
+		                    .anyMatch(genre -> genre.getName().equalsIgnoreCase("Comedy")))
+		            .sorted((m1, m2) -> Double.compare(m2.getRating().doubleValue(), m1.getRating().doubleValue())) 
+		            .limit(7) 
+		            .collect(Collectors.toList());
+		
+		
+		return movies;
+	}
+
+	@Override
+	public List<Movie> getMost5ByGenre(String genreName) {
+		List<Movie> movies = movieRepository.findAll();
+		movies = movies.stream()
+		            .filter(movie -> movie.getGenres().stream()
+		                    .anyMatch(genre -> genre.getName().equalsIgnoreCase(genreName)))
+		            .sorted((m1, m2) -> Double.compare(m2.getRating().doubleValue(), m1.getRating().doubleValue())) 
+		            .limit(5) 
+		            .collect(Collectors.toList());
+		
+		
+		return movies;
+	}
+
+	@Override
+	public List<Movie> getMoviesByGenre(String genreName) {
+		List<Movie> movies = movieRepository.findAll();
+		movies = movies.stream()
+		            .filter(movie -> movie.getGenres().stream()
+		                    .anyMatch(genre -> genre.getName().equalsIgnoreCase(genreName)))
+		            .collect(Collectors.toList());
+		
+		
+		return movies;
+	}
+
 }

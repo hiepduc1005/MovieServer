@@ -89,12 +89,6 @@ public class MovieController {
         return ResponseEntity.ok(movieResponses);
     }
 
-    @GetMapping("/genre/{genreId}")
-    public ResponseEntity<List<MovieResponse>> getMoviesByGenre(@PathVariable Integer genreId) {
-        List<Movie> movies = movieService.getMovieByGenre(genreId);
-        List<MovieResponse> movieResponses = movieConvert.moviesConvertToMovieResponses(movies);
-        return ResponseEntity.ok(movieResponses);
-    }
 
     @GetMapping("/trailer/{trailerId}")
     public ResponseEntity<List<MovieResponse>> getMoviesByTrailer(@PathVariable Integer trailerId) {
@@ -109,5 +103,53 @@ public class MovieController {
         List<MovieResponse> movieResponses = movieConvert.moviesConvertToMovieResponses(movies);
         return ResponseEntity.ok(movieResponses);
     }
-
+    
+    @GetMapping("/top10")
+    public ResponseEntity<List<MovieResponse>> getTop10MoviesMostRated() {
+        List<Movie> movies = movieService.getTop10MovieRate();
+        List<MovieResponse> movieResponses = movieConvert.moviesConvertToMovieResponses(movies);
+        return ResponseEntity.ok(movieResponses);
+    }
+    
+    @GetMapping("/anime")
+    public ResponseEntity<List<MovieResponse>> getAnimeMovies() {
+        List<Movie> movies = movieService.getAnimeMovies();
+        List<MovieResponse> movieResponses = movieConvert.moviesConvertToMovieResponses(movies);
+        return ResponseEntity.ok(movieResponses);
+    }
+    
+    @GetMapping("/action")
+    public ResponseEntity<List<MovieResponse>> getActionMovies() {
+        List<Movie> movies = movieService.getActionMovies();
+        List<MovieResponse> movieResponses = movieConvert.moviesConvertToMovieResponses(movies);
+        return ResponseEntity.ok(movieResponses);
+    }
+    
+    @GetMapping("/drama")
+    public ResponseEntity<List<MovieResponse>> getDramaMovies() {
+        List<Movie> movies = movieService.getDramaMovie();
+        List<MovieResponse> movieResponses = movieConvert.moviesConvertToMovieResponses(movies);
+        return ResponseEntity.ok(movieResponses);
+    }
+    
+    @GetMapping("/comedy")
+    public ResponseEntity<List<MovieResponse>> getComedyMovies() {
+        List<Movie> movies = movieService.getComedyMovie();
+        List<MovieResponse> movieResponses = movieConvert.moviesConvertToMovieResponses(movies);
+        return ResponseEntity.ok(movieResponses);
+    }
+    
+    @GetMapping("/genre/{genreName}/top5")
+    public ResponseEntity<List<MovieResponse>> getTop5MoviesByGenreName(@PathVariable String genreName) {
+        List<Movie> movies = movieService.getMost5ByGenre(genreName);
+        List<MovieResponse> movieResponses = movieConvert.moviesConvertToMovieResponses(movies);
+        return ResponseEntity.ok(movieResponses);
+    }
+    
+    @GetMapping("/genre/{genreName}")
+    public ResponseEntity<List<MovieResponse>> getMoviesByGenreName(@PathVariable String genreName) {
+        List<Movie> movies = movieService.getMoviesByGenre(genreName);
+        List<MovieResponse> movieResponses = movieConvert.moviesConvertToMovieResponses(movies);
+        return ResponseEntity.ok(movieResponses);
+    }
 }
