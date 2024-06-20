@@ -144,6 +144,7 @@ public class MovieConvert {
                 movie.getReleaseDate(),
                 movie.getPostUrl(),
                 movie.getBackDropUrl(),
+                movie.getSlug(),
                 movie.getDuration(),
                 movie.getRating(),
                 genres,

@@ -22,5 +22,7 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     List<Movie> findByTrailerId(Integer trailerId);
     
+    Movie findBySlug(String slug);
+    
  
 }

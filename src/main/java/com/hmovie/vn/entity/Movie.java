@@ -37,10 +37,22 @@ public class Movie {
 
 	@Column(name = "backdrop_url")
 	private String backDropUrl;
+	
+	private String slug;
 
 	private Integer duration;
 
 	private BigDecimal rating;
+	
+	
+
+	public String getSlug() {
+		return slug;
+	}
+
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinTable(name = "movies_genres", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genres_id"))

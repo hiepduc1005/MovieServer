@@ -18,6 +18,11 @@ public class DefaultMovieService implements MovieService {
 
     @Autowired
     public MovieRepository movieRepository;
+    
+    private static String toSlug(String title) {
+	    return title.toLowerCase().replaceAll("[^a-z0-9]+", "-");
+	}
+	
 
     @Override
     @Transactional
@@ -25,6 +30,8 @@ public class DefaultMovieService implements MovieService {
         if (movie.getId() != null) {
             throw new MovieException("Movie already exist!");
         }
+        
+        movie.setSlug(toSlug(movie.getTitle() + " " + movie.getImdbId()));
 
         return movieRepository.save(movie);
     }
@@ -86,6 +93,7 @@ public class DefaultMovieService implements MovieService {
         if (movieUpdate.getId() == null) {
             throw new MovieException("Movie is not exist");
         }
+        movieUpdate.setSlug(toSlug(movieUpdate.getTitle() + " " + movieUpdate.getImdbId()));
         return movieRepository.save(movieUpdate);
     }
 
@@ -225,6 +233,13 @@ public class DefaultMovieService implements MovieService {
 		
 		
 		return movies;
+	}
+
+
+	@Override
+	public Movie getMovieBySlug(String slug) {
+		// TODO Auto-generated method stub
+		return movieRepository.findBySlug(slug);
 	}
 
 }

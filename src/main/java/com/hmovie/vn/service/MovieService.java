@@ -43,4 +43,6 @@ public interface MovieService {
 	List<Movie> getMost5ByGenre(String genre);
 	
 	List<Movie> getMoviesByGenre(String genre);
+	
+	Movie getMovieBySlug(String slug);
 }

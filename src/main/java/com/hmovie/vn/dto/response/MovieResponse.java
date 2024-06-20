@@ -12,14 +12,22 @@ public class MovieResponse {
     private String releaseDate;
     private String postUrl;
     private String backDropUrl;
+    private String slug;
     private Integer duration;
     private BigDecimal rating;
     private List<String> genres;
     private List<String> actors;
     private List<String> directors;
     private String trailerUrl;
+    
+	public String getSlug() {
+		return slug;
+	}
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
 	public MovieResponse(Integer id, String imdbId, String title, String description, String releaseDate,
-			String postUrl, String backDropUrl, Integer duration, BigDecimal rating, List<String> genres,
+			String postUrl, String backDropUrl, String slug, Integer duration, BigDecimal rating, List<String> genres,
 			List<String> actors, List<String> directors, String trailerUrl) {
 		
 		this.id = id;
@@ -35,6 +43,7 @@ public class MovieResponse {
 		this.actors = actors;
 		this.directors = directors;
 		this.trailerUrl = trailerUrl;
+		this.slug = slug;
 	}
 	public Integer getId() {
 		return id;
