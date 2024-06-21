@@ -43,16 +43,6 @@ public class Movie {
 	private Integer duration;
 
 	private BigDecimal rating;
-	
-	
-
-	public String getSlug() {
-		return slug;
-	}
-
-	public void setSlug(String slug) {
-		this.slug = slug;
-	}
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinTable(name = "movies_genres", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genres_id"))
@@ -66,6 +56,9 @@ public class Movie {
 
 	@OneToOne(mappedBy = "movie", cascade = CascadeType.ALL)
 	private Trailer trailer;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "movie")
+	private List<Episode> episode;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinTable(name = "movies_actors", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "actor_id"))
@@ -74,6 +67,24 @@ public class Movie {
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinTable(name = "movies_directors", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "director_id"))
 	private List<Director> directors;
+	
+	public String getSlug() {
+		return slug;
+	}
+	
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
+
+	
+
+	public List<Episode> getEpisode() {
+		return episode;
+	}
+
+	public void setEpisode(List<Episode> episode) {
+		this.episode = episode;
+	}
 
 	public Integer getId() {
 		return id;

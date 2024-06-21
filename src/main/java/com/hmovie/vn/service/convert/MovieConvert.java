@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.hmovie.vn.dto.request.Movie.MovieCreateRequest;
 import com.hmovie.vn.dto.request.Movie.MovieUpdateRequest;
+import com.hmovie.vn.dto.response.EpisodeResponse;
+import com.hmovie.vn.dto.response.MovieEpisodeResponse;
 import com.hmovie.vn.dto.response.MovieResponse;
 import com.hmovie.vn.entity.Actor;
 import com.hmovie.vn.entity.Director;
@@ -33,6 +35,9 @@ public class MovieConvert {
 
     @Autowired
     public TrailerRepository trailerRepository;
+    
+    @Autowired
+    public EpisodeConvert episodeConvert;
 
     public Movie movieCreateRequestConverToMovie(MovieCreateRequest movieCreateRequest) {
 
@@ -135,6 +140,10 @@ public class MovieConvert {
                 .collect(Collectors.toList());
 
         String trailerUrl = movie.getTrailer() != null ? movie.getTrailer().getTrailerUrl() : null;
+         
+        List<EpisodeResponse> episodeResponses = episodeConvert.convertToEpisodeResponse(movie.getEpisode());
+ 
+        
 
         return new MovieResponse(
                 movie.getId(),
@@ -150,7 +159,35 @@ public class MovieConvert {
                 genres,
                 actors,
                 directors,
-                trailerUrl);
+                trailerUrl,
+                episodeResponses);
+    }
+    
+    public MovieEpisodeResponse movieConvertToMovieEpisodeResponse(Movie movie) {
+        if (movie == null) {
+            return null;
+        }
+
+        List<String> genres = movie.getGenres().stream()
+                .map(Genre::getName)
+                .collect(Collectors.toList());
+
+        String trailerUrl = movie.getTrailer() != null ? movie.getTrailer().getTrailerUrl() : null;
+                
+        Integer totalEpisode = movie.getEpisode().get(0).getTotalEpisode();
+         
+        return new MovieEpisodeResponse(
+        		movie.getId(),
+        		movie.getImdbId(),
+        		movie.getTitle(),
+        		movie.getDescription(),
+        		movie.getReleaseDate(),
+        		movie.getDuration(),
+        		movie.getRating(),
+        		genres,
+        		trailerUrl,
+        		totalEpisode
+        		,"",movie.getSlug());
     }
 
     public List<MovieResponse> moviesConvertToMovieResponses(List<Movie> movies) {

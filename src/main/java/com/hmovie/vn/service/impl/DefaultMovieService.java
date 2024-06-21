@@ -30,8 +30,10 @@ public class DefaultMovieService implements MovieService {
         if (movie.getId() != null) {
             throw new MovieException("Movie already exist!");
         }
+        String slug = toSlug(movie.getTitle() + " " + movie.getImdbId());
+        movie.setSlug(slug);
         
-        movie.setSlug(toSlug(movie.getTitle() + " " + movie.getImdbId()));
+        movie.getEpisode();
 
         return movieRepository.save(movie);
     }

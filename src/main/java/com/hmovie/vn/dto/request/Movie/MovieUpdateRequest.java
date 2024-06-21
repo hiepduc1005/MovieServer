@@ -18,7 +18,7 @@ public class MovieUpdateRequest {
     private Integer duration;
 
     private BigDecimal rating;
-
+    
     private Integer trailerId;
 
     private List<Integer> directorIds;

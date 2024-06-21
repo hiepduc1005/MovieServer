@@ -154,12 +154,15 @@ public class MovieController {
     }
     
     @GetMapping("/slug/{slug}")
-    public ResponseEntity<Movie> getMovieBySlug(@PathVariable String slug) {
+    public ResponseEntity<MovieResponse> getMovieBySlug(@PathVariable String slug) {
         Movie movie = movieService.getMovieBySlug(slug);
+        MovieResponse response = movieConvert.movieConvertToMovieResponse(movie);
         if (movie != null) {
-            return ResponseEntity.ok(movie);
+            return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+   
+    
 }
