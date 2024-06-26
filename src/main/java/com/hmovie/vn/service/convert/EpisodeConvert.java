@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.hmovie.vn.dto.request.episode.EpisodeCreateRequest;
 import com.hmovie.vn.dto.response.EpisodeResponse;
 import com.hmovie.vn.entity.Episode;
-import com.hmovie.vn.entity.Genre;
 
 @Service
 public class EpisodeConvert {

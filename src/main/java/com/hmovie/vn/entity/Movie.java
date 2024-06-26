@@ -51,8 +51,8 @@ public class Movie {
 	@OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
 	private List<Review> reviews;
 
-	@OneToOne(mappedBy = "movie", cascade = CascadeType.ALL)
-	private WatchList watchList;
+	@ManyToMany(mappedBy = "movies")
+	private List<WatchList> watchLists;
 
 	@OneToOne(mappedBy = "movie", cascade = CascadeType.ALL)
 	private Trailer trailer;
@@ -174,12 +174,13 @@ public class Movie {
 		this.reviews = reviews;
 	}
 
-	public WatchList getWatchList() {
-		return watchList;
+	
+	public List<WatchList> getWatchLists() {
+		return watchLists;
 	}
 
-	public void setWatchList(WatchList watchList) {
-		this.watchList = watchList;
+	public void setWatchLists(List<WatchList> watchLists) {
+		this.watchLists = watchLists;
 	}
 
 	public Trailer getTrailer() {

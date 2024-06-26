@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hmovie.vn.entity.Provider;
 import com.hmovie.vn.entity.Role;
 import com.hmovie.vn.entity.User;
 import com.hmovie.vn.entity.WatchList;

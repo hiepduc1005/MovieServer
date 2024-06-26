@@ -1,11 +1,16 @@
 package com.hmovie.vn.entity;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 
 
@@ -17,13 +22,12 @@ public class WatchList {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@OneToOne
-	@JoinColumn(name = "user_id")
+	@OneToOne(mappedBy = "watchList", cascade = CascadeType.ALL)
 	private User user;
 
-	@OneToOne
-	@JoinColumn(name = "movie_id")
-	private Movie movie;
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+	@JoinTable(name = "watchlists_movies", joinColumns = @JoinColumn(name = "watchlist_id"), inverseJoinColumns = @JoinColumn(name = "movie_id"))
+	private List<Movie> movies;
 
 	@Column(name = "added_at")
 	private String addAt;
@@ -44,12 +48,14 @@ public class WatchList {
 		this.user = user;
 	}
 
-	public Movie getMovie() {
-		return movie;
+	
+
+	public List<Movie> getMovies() {
+		return movies;
 	}
 
-	public void setMovie(Movie movie) {
-		this.movie = movie;
+	public void setMovies(List<Movie> movies) {
+		this.movies = movies;
 	}
 
 	public String getAddAt() {
