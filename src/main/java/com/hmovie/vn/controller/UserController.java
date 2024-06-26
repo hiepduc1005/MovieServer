@@ -31,7 +31,6 @@ public class UserController {
     
     @GetMapping("/me")
     public ResponseEntity<String> getUser() {
-
     	return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 

@@ -1,4 +1,8 @@
 spring:
+  # config:
+  #   import:
+  #     - file:./.env[.properties]
+  #     - file:.env[.properties]
   security:
     oauth2:
       client:
@@ -6,7 +10,7 @@ spring:
           google:
             client-id: 879397236202-ldlelahhslbt2o8h80n5ojuk6gk7piek.apps.googleusercontent.com
             client-secret: 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
-            scope: 
+            scope:
               - email
               - profile
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
