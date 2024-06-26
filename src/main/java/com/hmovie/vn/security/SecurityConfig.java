@@ -20,59 +20,53 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.hmovie.vn.security.oauth2.CustomOauth2UserService;
 import com.hmovie.vn.security.oauth2.Oauth2LoginSuccessHandler;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-		return authenticationConfiguration.getAuthenticationManager(); 
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
 	}
-	
+
 	@Autowired
 	public Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
-	
+
 	@Bean
 	public JWTFIlterChain jwtfIlterChain() {
 		return new JWTFIlterChain();
 	}
-	
+
 	@Autowired
 	public CustomOauth2UserService customOauth2UserService;
-	
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	    http.csrf(csrf -> csrf.disable())
-	        .authorizeHttpRequests(authorize -> 
-	            authorize
-	                .requestMatchers("/api/v1/watchlist/**").authenticated()
-	                .anyRequest().permitAll()
-	        )
-	        .sessionManagement(session -> 
-	            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	        );
-	    
-	  
-	    http.oauth2Client(Customizer.withDefaults());
-	    http.oauth2Login(oauth -> 
-	          oauth.userInfoEndpoint(userInfo -> 
-	                   userInfo.userService(customOauth2UserService))
-	        	               .loginPage("http://localhost:3000/login")
-	        	               .successHandler(oauth2LoginSuccessHandler)
-	    		);
+		http.csrf(csrf -> csrf.disable())
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers("/api/v1/watchlist/**").authenticated()
+						.anyRequest().permitAll())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-	    http.addFilterBefore(jwtfIlterChain(), UsernamePasswordAuthenticationFilter.class);
+		http.oauth2Client(Customizer.withDefaults());
+		http.oauth2Login(oauth -> oauth.userInfoEndpoint(userInfo -> userInfo.userService(customOauth2UserService))
+				.loginPage("http://localhost:3000/login")
+				.successHandler(oauth2LoginSuccessHandler));
 
+		http.addFilterBefore(jwtfIlterChain(), UsernamePasswordAuthenticationFilter.class);
 
-	    return http.build();
+		return http.build();
 	}
-    
-    @Bean
+
+	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override
@@ -84,5 +78,10 @@ public class SecurityConfig {
 			}
 		};
 	}
-   
+
+	@Bean
+	public Dotenv dotenv() {
+		return Dotenv.configure().load();
+	}
+
 }
