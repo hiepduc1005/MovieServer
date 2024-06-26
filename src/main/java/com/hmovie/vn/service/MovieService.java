@@ -28,6 +28,8 @@ public interface MovieService {
 	
 	List<Movie> get5MovieMostRatedNotAnime();
 	
+	List<Movie> getTop14MovieRate();
+
 	List<Movie> getTop10MovieRate();
 	
 	List<Movie> getAnimeMovies();

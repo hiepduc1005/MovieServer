@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hmovie.vn.entity.Provider;
 import com.hmovie.vn.entity.Role;
 import com.hmovie.vn.entity.User;
 import com.hmovie.vn.entity.WatchList;
@@ -49,10 +50,10 @@ public class DefaultUserService implements UserService {
 		}
 		
 		user.setRole(Role.ROLE_USER);
-		
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String password = user.getPassword();
-		String encryptPassword = passwordEncoder.encode(password);
+		
+		String encryptPassword = (password == null || password.isEmpty()) ? "" : passwordEncoder.encode(password);
 		
 		user.setPassword(encryptPassword);
 		

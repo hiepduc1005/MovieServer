@@ -1,9 +1,11 @@
 package com.hmovie.vn.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +16,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.hmovie.vn.security.oauth2.CustomOauth2UserService;
+import com.hmovie.vn.security.oauth2.Oauth2LoginSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -29,23 +34,43 @@ public class SecurityConfig {
 		return authenticationConfiguration.getAuthenticationManager(); 
 	}
 	
+	@Autowired
+	public Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
+	
 	@Bean
 	public JWTFIlterChain jwtfIlterChain() {
 		return new JWTFIlterChain();
 	}
+	
+	@Autowired
+	public CustomOauth2UserService customOauth2UserService;
+	
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	    http.csrf(csrf -> csrf.disable())
+	        .authorizeHttpRequests(authorize -> 
+	            authorize
+	                .requestMatchers("/api/v1/watchlist/**").authenticated()
+	                .anyRequest().permitAll()
+	        )
+	        .sessionManagement(session -> 
+	            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+	        );
+	    
+	  
+	    http.oauth2Client(Customizer.withDefaults());
+	    http.oauth2Login(oauth -> 
+	          oauth.userInfoEndpoint(userInfo -> 
+	                   userInfo.userService(customOauth2UserService))
+	        	               .loginPage("http://localhost:3000/login")
+	        	               .successHandler(oauth2LoginSuccessHandler)
+	    		);
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(t -> t.disable())
-                .authorizeHttpRequests(requestMatcher -> 
-                            requestMatcher.requestMatchers("api/v1/watchlist/**").authenticated()
-                            .anyRequest().permitAll())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        
-        http.addFilterBefore(jwtfIlterChain(), UsernamePasswordAuthenticationFilter.class);
-        
-        return http.build();
-    }
+	    http.addFilterBefore(jwtfIlterChain(), UsernamePasswordAuthenticationFilter.class);
+
+
+	    return http.build();
+	}
     
     @Bean
 	public WebMvcConfigurer corsConfigurer() {

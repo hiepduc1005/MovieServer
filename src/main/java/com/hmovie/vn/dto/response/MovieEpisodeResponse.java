@@ -33,6 +33,7 @@ public class MovieEpisodeResponse {
 		this.totalEpisode = totalEpisode;
 		this.episodeUrl = episodeUrl;
 		this.slug = slug;
+		
 	}
 	
 	

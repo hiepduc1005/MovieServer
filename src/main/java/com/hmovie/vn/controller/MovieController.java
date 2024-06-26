@@ -104,6 +104,13 @@ public class MovieController {
         return ResponseEntity.ok(movieResponses);
     }
     
+    @GetMapping("/top14")
+    public ResponseEntity<List<MovieResponse>> getTop14MoviesMostRated() {
+        List<Movie> movies = movieService.getTop14MovieRate();
+        List<MovieResponse> movieResponses = movieConvert.moviesConvertToMovieResponses(movies);
+        return ResponseEntity.ok(movieResponses);
+    }
+    
     @GetMapping("/top10")
     public ResponseEntity<List<MovieResponse>> getTop10MoviesMostRated() {
         List<Movie> movies = movieService.getTop10MovieRate();

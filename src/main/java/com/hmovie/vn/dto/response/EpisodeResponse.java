@@ -14,6 +14,8 @@ public class EpisodeResponse {
 	private String episodeUrl;
 	
 	
+	
+
 
 	public EpisodeResponse(Integer id, Integer totalEpisode, String slug, Integer episodeNumber, String episodeUrl) {
 		

@@ -135,13 +135,23 @@ public class DefaultMovieService implements MovieService {
 	}
 
 	@Override
-	public List<Movie> getTop10MovieRate() {
+	@Transactional(readOnly = true)
+	public List<Movie> getTop14MovieRate() {
 		return movieRepository.findAll()
 				.stream().sorted((m1, m2) -> Double.compare(m2.getRating().doubleValue(), m1.getRating().doubleValue()))
 				.limit(14).toList();
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Movie> getTop10MovieRate() {
+		return movieRepository.findAll()
+				.stream().sorted((m1, m2) -> Double.compare(m2.getRating().doubleValue(), m1.getRating().doubleValue()))
+				.limit(10).toList();
+	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Movie> getAnimeMovies() {
 		List<Movie> movies = movieRepository.findAll();
 		movies = movies.stream()
@@ -156,6 +166,7 @@ public class DefaultMovieService implements MovieService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Movie> getActionMovies() {
 		List<Movie> movies = movieRepository.findAll();
 		movies = movies.stream()
@@ -170,6 +181,7 @@ public class DefaultMovieService implements MovieService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Movie> getDramaMovie() {
 		List<Movie> movies = movieRepository.findAll();
 		movies = movies.stream()
@@ -184,6 +196,7 @@ public class DefaultMovieService implements MovieService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Movie> getSciFiMovie() {
 		List<Movie> movies = movieRepository.findAll();
 		movies = movies.stream()
@@ -198,6 +211,7 @@ public class DefaultMovieService implements MovieService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Movie> getComedyMovie() {
 		List<Movie> movies = movieRepository.findAll();
 		movies = movies.stream()
@@ -212,6 +226,7 @@ public class DefaultMovieService implements MovieService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Movie> getMost5ByGenre(String genreName) {
 		List<Movie> movies = movieRepository.findAll();
 		movies = movies.stream()
@@ -226,6 +241,7 @@ public class DefaultMovieService implements MovieService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Movie> getMoviesByGenre(String genreName) {
 		List<Movie> movies = movieRepository.findAll();
 		movies = movies.stream()
@@ -239,6 +255,7 @@ public class DefaultMovieService implements MovieService {
 
 
 	@Override
+	@Transactional(readOnly = true)
 	public Movie getMovieBySlug(String slug) {
 		// TODO Auto-generated method stub
 		return movieRepository.findBySlug(slug);

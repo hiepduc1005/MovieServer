@@ -23,6 +23,11 @@ public class User {
 	private String username;
 	private String email;
 	private String password;
+	
+	@Enumerated(EnumType.STRING)
+	private Provider provider;
+	
+	private String avatarUrl;
 
 	@Column(name = "create_at")
 	private String createdAt;
@@ -37,6 +42,23 @@ public class User {
 	private Role role;
 	
 	
+	
+
+	public String getAvatarUrl() {
+		return avatarUrl;
+	}
+
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
+	}
+
+	public Provider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(Provider provider) {
+		this.provider = provider;
+	}
 
 	public Role getRole() {
 		return role;

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hmovie.vn.dto.request.Auth.UserAuthRequest;
 import com.hmovie.vn.dto.request.Auth.UserSignUpRequest;
 import com.hmovie.vn.dto.response.UserAuthResponse;
+import com.hmovie.vn.entity.Provider;
 import com.hmovie.vn.entity.User;
 import com.hmovie.vn.security.JWTGenerator;
 import com.hmovie.vn.service.EmailValidator;
@@ -41,6 +42,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody UserSignUpRequest signUpRequest) {
         User user = userConvert.userSignUpRequestConvertToUser(signUpRequest);
+        user.setProvider(Provider.HMOVIE);
         userService.createUser(user);
 
         return ResponseEntity.ok("Create user success full");

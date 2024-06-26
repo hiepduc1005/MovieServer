@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
@@ -16,16 +17,22 @@ public class JWTGenerator {
 	private static final SecretKey KEY = Jwts.SIG.HS512.key().build();
 	
 	public String gennerateToken(Authentication authentication) {
-		String username = authentication.getName();
+		String username ="";
+		
+		if(authentication instanceof OAuth2AuthenticationToken auth2AuthenticationToken) {
+			username = auth2AuthenticationToken.getPrincipal().getAttribute("email");
+		}
+		else {
+			username = authentication.getName();
+		}
+		
 		
 		String token = Jwts.builder()
 				.subject(username)
 				.issuedAt(new Date())
 				.expiration(new Date(System.currentTimeMillis() + ONE_HOUR))
 				.signWith(KEY)
-				.compact();
-		System.out.println(token);
-		
+				.compact();		
 		return token;
 	}
 	
