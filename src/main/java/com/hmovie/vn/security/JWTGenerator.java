@@ -30,7 +30,7 @@ public class JWTGenerator {
 		String token = Jwts.builder()
 				.subject(username)
 				.issuedAt(new Date())
-				.expiration(new Date(System.currentTimeMillis() + ONE_HOUR))
+				.expiration(new Date(System.currentTimeMillis() + (ONE_HOUR * 24)))
 				.signWith(KEY)
 				.compact();		
 		return token;

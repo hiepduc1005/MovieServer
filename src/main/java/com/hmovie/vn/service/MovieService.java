@@ -47,4 +47,6 @@ public interface MovieService {
 	List<Movie> getMoviesByGenre(String genre);
 	
 	Movie getMovieBySlug(String slug);
+	
+	Movie findById(Integer id);
 }

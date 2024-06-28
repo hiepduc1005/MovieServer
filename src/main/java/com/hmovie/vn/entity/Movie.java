@@ -68,15 +68,25 @@ public class Movie {
 	@JoinTable(name = "movies_directors", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "director_id"))
 	private List<Director> directors;
 	
+	@OneToOne(mappedBy = "movie")
+	private WatchHistory watchHistory;
+	
 	public String getSlug() {
 		return slug;
 	}
 	
 	public void setSlug(String slug) {
 		this.slug = slug;
-	}
+	}     
 
 	
+	public WatchHistory getWatchHistory() {
+		return watchHistory;
+	}
+
+	public void setWatchHistory(WatchHistory watchHistory) {
+		this.watchHistory = watchHistory;
+	}
 
 	public List<Episode> getEpisode() {
 		return episode;

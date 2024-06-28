@@ -261,4 +261,11 @@ public class DefaultMovieService implements MovieService {
 		return movieRepository.findBySlug(slug);
 	}
 
+
+	@Override
+	public Movie findById(Integer id) {
+		
+		return movieRepository.findById(id).orElse(null);
+	}
+
 }

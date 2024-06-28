@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.hmovie.vn.dto.request.Auth.UserSignUpRequest;
 import com.hmovie.vn.dto.response.MovieResponse;
 import com.hmovie.vn.dto.response.UserResponse;
+import com.hmovie.vn.dto.response.WatchHistoryResponse;
 import com.hmovie.vn.entity.Movie;
 import com.hmovie.vn.entity.User;
 import com.hmovie.vn.entity.WatchList;
@@ -19,6 +20,9 @@ public class UserConvert {
 	
 	@Autowired
 	public MovieConvert movieConvert;
+	
+	@Autowired
+	public WatchHistoryConvert watchHistoryConvert;
 
     public User userSignUpRequestConvertToUser(UserSignUpRequest userSignUpRequest) {
         if (userSignUpRequest == null) {
@@ -43,8 +47,11 @@ public class UserConvert {
     	List<MovieResponse> movieResponses = new ArrayList<MovieResponse>();
     	if(!movies.isEmpty()) {  		
     	   movieResponses = movies.stream().map(movie -> movieConvert.movieConvertToMovieResponse(movie)).toList();
-    	}    	
-    	   	
+    	}  
+    	
+    	List<WatchHistoryResponse> historyResponses = user.getWatchHistory()
+    			.stream().map(wh -> watchHistoryConvert.watchHistoryConvertToWatchHistoryResponse(wh)).toList();
+    	
     	return new UserResponse(
     			user.getId(),
     			user.getUsername(),
@@ -53,7 +60,8 @@ public class UserConvert {
     			user.getAvatarUrl(),
     			user.getCreatedAt(),
     			user.getRole(), 
-    			movieResponses);
+    			movieResponses,
+    			historyResponses);
     }
     
 

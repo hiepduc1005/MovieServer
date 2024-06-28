@@ -59,7 +59,7 @@ public class DefaultUserService implements UserService {
         WatchList watchList = watchListService.createWatchList();
         user.setWatchList(watchList);
         user.setCreatedAt(getCurrenDateTime());
-
+        
         return userRepository.save(user);
     }
 
@@ -103,6 +103,15 @@ public class DefaultUserService implements UserService {
 	@Override
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
+	}
+
+	@Override
+	public User findUserById(Integer userId) {
+		if (userId == null || userId <= 0) {
+	            throw new RuntimeException("User id must not be null and must be positive");
+	    }
+		
+		return userRepository.findById(userId).orElse(null);
 	}
 
 

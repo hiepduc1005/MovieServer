@@ -14,4 +14,6 @@ public interface UserService {
 	String getCreatedDate();
 	
 	User findUserByEmail(String email);
+	
+	User findUserById(Integer userId);
 }

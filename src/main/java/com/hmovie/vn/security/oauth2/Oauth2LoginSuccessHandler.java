@@ -55,11 +55,11 @@ public class Oauth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 
        
         Cookie cookie = new Cookie("token", token);
-        cookie.setHttpOnly(true); 
+        cookie.setHttpOnly(false); 
         cookie.setSecure(true); 
         cookie.setPath("/"); 
         cookie.setMaxAge(86400); 
-       
+      
         response.addCookie(cookie);
 
        

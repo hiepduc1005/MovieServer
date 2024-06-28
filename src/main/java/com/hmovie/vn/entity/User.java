@@ -43,8 +43,20 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+	private List<WatchHistory> watchHistories;
 	
 	
+
+	
+
+	public List<WatchHistory> getWatchHistory() {
+		return watchHistories;
+	}
+
+	public void setWatchHistory(List<WatchHistory> watchHistory) {
+		this.watchHistories = watchHistory;
+	}
 
 	public String getAvatarUrl() {
 		return avatarUrl;
