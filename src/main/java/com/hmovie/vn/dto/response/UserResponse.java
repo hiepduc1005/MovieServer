@@ -14,7 +14,7 @@ public class UserResponse {
 	private String avatarUrl;
 	private String createdAt;
 	private Role role;
-	private List<MovieResponse> watchList;
+	private WatchListResponse watchList;
 	private List<WatchHistoryResponse> watchHistoryResponses;
 	
 	
@@ -62,12 +62,15 @@ public class UserResponse {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	public List<MovieResponse> getWatchList() {
+	
+	
+	public WatchListResponse getWatchList() {
 		return watchList;
 	}
-	public void setWatchList(List<MovieResponse> watchList) {
+	public void setWatchList(WatchListResponse watchList) {
 		this.watchList = watchList;
 	}
+	
 	public List<WatchHistoryResponse> getWatchHistoryResponses() {
 		return watchHistoryResponses;
 	}
@@ -75,7 +78,7 @@ public class UserResponse {
 		this.watchHistoryResponses = watchHistoryResponses;
 	}
 	public UserResponse(Integer id, String username, String email, Provider provider, String avatarUrl,
-			String createdAt, Role role, List<MovieResponse> watchList,
+			String createdAt, Role role, WatchListResponse watchList,
 			List<WatchHistoryResponse> watchHistoryResponses) {
 		this.id = id;
 		this.username = username;
@@ -87,7 +90,6 @@ public class UserResponse {
 		this.watchList = watchList;
 		this.watchHistoryResponses = watchHistoryResponses;
 	}
-	
 	
 	
 }

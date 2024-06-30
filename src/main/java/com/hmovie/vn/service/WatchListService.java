@@ -7,4 +7,6 @@ public interface WatchListService {
 	WatchList createWatchList();
 
 	void addMovieToWatchList(Integer watchlistId,Integer movieId);
+	
+	boolean checkMovieInWatchList(Integer watchlistId,Integer movieId);
 }

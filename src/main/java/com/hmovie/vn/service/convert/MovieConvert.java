@@ -10,6 +10,7 @@ import com.hmovie.vn.dto.request.Movie.MovieCreateRequest;
 import com.hmovie.vn.dto.request.Movie.MovieUpdateRequest;
 import com.hmovie.vn.dto.response.EpisodeResponse;
 import com.hmovie.vn.dto.response.MovieEpisodeResponse;
+import com.hmovie.vn.dto.response.MovieHistoryResponse;
 import com.hmovie.vn.dto.response.MovieResponse;
 import com.hmovie.vn.entity.Actor;
 import com.hmovie.vn.entity.Director;
@@ -161,6 +162,30 @@ public class MovieConvert {
                 directors,
                 trailerUrl,
                 episodeResponses);
+    }
+    
+    public MovieHistoryResponse movieConvertToMovieHistoryResponse(Movie movie) {
+        if (movie == null) {
+            return null;
+        }
+
+        List<String> genres = movie.getGenres().stream()
+                .map(Genre::getName)
+                .collect(Collectors.toList());
+
+        return new MovieHistoryResponse(
+                movie.getId(),
+                movie.getImdbId(),
+                movie.getTitle(),
+                movie.getDescription(),
+                movie.getReleaseDate(),
+                movie.getPostUrl(),
+                movie.getBackDropUrl(),
+                movie.getSlug(),
+                movie.getDuration(),
+                movie.getRating(),
+                genres
+                );
     }
     
     public MovieEpisodeResponse movieConvertToMovieEpisodeResponse(Movie movie) {

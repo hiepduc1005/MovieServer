@@ -1,19 +1,14 @@
 package com.hmovie.vn.service.convert;
-
-
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hmovie.vn.dto.request.Auth.UserSignUpRequest;
-import com.hmovie.vn.dto.response.MovieResponse;
 import com.hmovie.vn.dto.response.UserResponse;
 import com.hmovie.vn.dto.response.WatchHistoryResponse;
-import com.hmovie.vn.entity.Movie;
+import com.hmovie.vn.dto.response.WatchListResponse;
 import com.hmovie.vn.entity.User;
-import com.hmovie.vn.entity.WatchList;
 
 @Service
 public class UserConvert {
@@ -23,6 +18,9 @@ public class UserConvert {
 	
 	@Autowired
 	public WatchHistoryConvert watchHistoryConvert;
+	
+	@Autowired
+	public WatchListConvert watchListConvert;
 
     public User userSignUpRequestConvertToUser(UserSignUpRequest userSignUpRequest) {
         if (userSignUpRequest == null) {
@@ -42,15 +40,11 @@ public class UserConvert {
     		return null;
     	}
     	
-    	WatchList watchList = user.getWatchList();
-    	List<Movie> movies = watchList.getMovies();
-    	List<MovieResponse> movieResponses = new ArrayList<MovieResponse>();
-    	if(!movies.isEmpty()) {  		
-    	   movieResponses = movies.stream().map(movie -> movieConvert.movieConvertToMovieResponse(movie)).toList();
-    	}  
     	
     	List<WatchHistoryResponse> historyResponses = user.getWatchHistory()
     			.stream().map(wh -> watchHistoryConvert.watchHistoryConvertToWatchHistoryResponse(wh)).toList();
+    	
+    	WatchListResponse watchListResponse =watchListConvert.watchListConvertToWatchListResponse(user.getWatchList());
     	
     	return new UserResponse(
     			user.getId(),
@@ -60,8 +54,9 @@ public class UserConvert {
     			user.getAvatarUrl(),
     			user.getCreatedAt(),
     			user.getRole(), 
-    			movieResponses,
-    			historyResponses);
+    			watchListResponse,
+    			historyResponses
+    			);
     }
     
 

@@ -15,7 +15,7 @@ public class WatchHistoryConvert {
 	public WatchHistoryResponse watchHistoryConvertToWatchHistoryResponse(WatchHistory watchHistory) {
 		return new WatchHistoryResponse(
 				watchHistory.getId(),
-				movieConvert.movieConvertToMovieResponse(watchHistory.getMovie()),
+				movieConvert.movieConvertToMovieHistoryResponse(watchHistory.getMovie()),
 				watchHistory.getEpisodeNumber()
 				);
 	}

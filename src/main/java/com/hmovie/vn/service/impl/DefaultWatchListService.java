@@ -30,7 +30,7 @@ public class DefaultWatchListService implements WatchListService {
 
 	@Override
 	public void addMovieToWatchList(Integer watchlistId, Integer movieId) {
-		if(movieId == null || movieId < 0) {
+		if(watchlistId == null || watchlistId < 0) {
 			throw new RuntimeException("WatchList id must not be null and must be positive");
 		}
 		if(movieId == null || movieId < 0) {
@@ -48,9 +48,37 @@ public class DefaultWatchListService implements WatchListService {
 		}
 		
 		List<Movie> newMovies = watchList.getMovies();
-		newMovies.add(movie);
+		
+		if(newMovies.contains(movie)) {
+			newMovies.remove(movie);
+		}
+		else newMovies.add(movie);
+		
 		
 		watchListRepository.save(watchList);
+	}
+
+	@Override
+	public boolean checkMovieInWatchList(Integer watchlistId, Integer movieId) {
+		if(watchlistId == null || watchlistId < 0) {
+			throw new RuntimeException("WatchList id must not be null and must be positive");
+		}
+		if(movieId == null || movieId < 0) {
+			throw new RuntimeException("Movie id must not be null and must be positive");
+		}
+		
+		WatchList watchList = watchListRepository.findById(watchlistId).orElse(null);
+		if(watchList == null) {
+			throw new RuntimeException("Cant not found watch list with id:" + watchlistId);
+		}
+		
+		Movie movie = movieRepository.findById(movieId).orElse(null);
+		if(movie == null) {
+			throw new RuntimeException("Cant not found movie with id:" + movieId);
+		}
+		
+		
+		return watchList.getMovies().contains(movie);
 	}
 
 }

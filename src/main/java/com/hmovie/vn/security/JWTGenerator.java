@@ -43,9 +43,7 @@ public class JWTGenerator {
 				.parseSignedClaims(token)
 				.getPayload()
 				.getSubject();
-		
-		System.out.println(username);
-		
+				
 		return username;
 	}
 	

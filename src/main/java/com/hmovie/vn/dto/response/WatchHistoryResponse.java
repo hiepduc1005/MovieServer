@@ -5,15 +5,15 @@ public class WatchHistoryResponse {
 	
 	private Integer id;
 	
-	private MovieResponse movieResponse;
+	private MovieHistoryResponse movieHistoryResponse;
 	
 	private Integer episodeNumber;
 
 	
 
-	public WatchHistoryResponse(Integer id, MovieResponse movieResponse, Integer episodeNumber) {
+	public WatchHistoryResponse(Integer id, MovieHistoryResponse movieResponse, Integer episodeNumber) {
 		this.id = id;
-		this.movieResponse = movieResponse;
+		this.movieHistoryResponse = movieResponse;
 		this.episodeNumber = episodeNumber;
 	}
 
@@ -33,12 +33,12 @@ public class WatchHistoryResponse {
 		this.id = id;
 	}
 
-	public MovieResponse getMovieResponse() {
-		return movieResponse;
+	public MovieHistoryResponse getMovieHistoryResponse() {
+		return movieHistoryResponse;
 	}
 
-	public void setMovieResponse(MovieResponse movieResponse) {
-		this.movieResponse = movieResponse;
+	public void setMovieHistoryResponse(MovieHistoryResponse movieHistoryResponse) {
+		this.movieHistoryResponse = movieHistoryResponse;
 	}
 
 	
