@@ -3,7 +3,7 @@ package com.hmovie.vn.security;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +11,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.hmovie.vn.exception.AuthenticationException;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,28 +28,33 @@ public class JWTFIlterChain extends OncePerRequestFilter{
 	
 	@Autowired
 	public JWTGenerator jwtGenerator;
+	
+	 @Override
+	 protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+	         throws ServletException, IOException {
+	     try {
+	         String token = getTokenFromHeader(request);
+	         boolean check = jwtGenerator.checkValidToken(token);
+	         if (StringUtils.hasText(token) && check) {
+	             String username = jwtGenerator.getUserNameByJWTToken(token);
 
-	@Override
-	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
-			throws ServletException, IOException {
-		
-		String token = getTokenFromHeader(request);
-		if(StringUtils.hasText(token) && jwtGenerator.checkValidToken(token)) {
-			String username = jwtGenerator.getUserNameByJWTToken(token);
-			
-			UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-			
-			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = 
-					new UsernamePasswordAuthenticationToken(username, null , userDetails.getAuthorities());
-			
-			usernamePasswordAuthenticationToken.setDetails(
-					new WebAuthenticationDetailsSource().buildDetails(request));
-			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-		}
-		
-		filterChain.doFilter(request, response);
-		
-	}
+	             UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+
+	             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+	                     new UsernamePasswordAuthenticationToken(username, null, userDetails.getAuthorities());
+
+	             usernamePasswordAuthenticationToken.setDetails(
+	                     new WebAuthenticationDetailsSource().buildDetails(request));
+	             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+	         }
+	     } catch (AuthenticationException ex) {
+	         response.setStatus(HttpStatus.UNAUTHORIZED.value());
+	         response.getWriter().write(ex.getMessage());
+	         return;
+	     }
+
+	     filterChain.doFilter(request, response);
+	 }
 	
 	public String getTokenFromHeader(HttpServletRequest request) {
 		String header = request.getHeader("Authorization");

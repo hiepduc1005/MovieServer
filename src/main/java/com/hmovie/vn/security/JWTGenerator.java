@@ -4,10 +4,11 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
+
+import com.hmovie.vn.exception.AuthenticationException;
 
 import io.jsonwebtoken.Jwts;
 
@@ -48,7 +49,7 @@ public class JWTGenerator {
 		return username;
 	}
 	
-	public boolean checkValidToken(String token){
+	public boolean checkValidToken(String token) throws AuthenticationException{
 		try {
 			Jwts.parser()
 			.verifyWith(KEY)
@@ -56,7 +57,7 @@ public class JWTGenerator {
 			.parseSignedClaims(token);
 			return true;
 		} catch (Exception e) {
-			throw new AuthenticationCredentialsNotFoundException("Invalid or expired token!");
+			throw new AuthenticationException("Invalid or expired token!");
 		}
 		
 	}
