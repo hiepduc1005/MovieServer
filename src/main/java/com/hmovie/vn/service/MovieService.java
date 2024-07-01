@@ -2,6 +2,8 @@ package com.hmovie.vn.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.hmovie.vn.entity.Movie;
 
 public interface MovieService {
@@ -49,4 +51,6 @@ public interface MovieService {
 	Movie getMovieBySlug(String slug);
 	
 	Movie findById(Integer id);
+	
+	Page<Movie> findMovieByQueryWithPaginate(String query,Integer page,Integer limit);
 }
