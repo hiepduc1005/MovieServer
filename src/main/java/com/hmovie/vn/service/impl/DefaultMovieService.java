@@ -275,7 +275,7 @@ public class DefaultMovieService implements MovieService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<Movie> findMovieByQueryWithPaginate(String query, Integer page, Integer limit) {
-		 Pageable pageable = PageRequest.of(page, limit);
+		 Pageable pageable = PageRequest.of(page-1, limit);
 	     return movieRepository.findMovieByQueryWithPaginate(query, pageable);
 	}
 

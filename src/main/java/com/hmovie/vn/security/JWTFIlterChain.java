@@ -32,26 +32,29 @@ public class JWTFIlterChain extends OncePerRequestFilter{
 	 @Override
 	 protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 	         throws ServletException, IOException {
-	     try {
-	         String token = getTokenFromHeader(request);
-	         boolean check = jwtGenerator.checkValidToken(token);
-	         if (StringUtils.hasText(token) && check) {
-	             String username = jwtGenerator.getUserNameByJWTToken(token);
-
-	             UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-
-	             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-	                     new UsernamePasswordAuthenticationToken(username, null, userDetails.getAuthorities());
-
-	             usernamePasswordAuthenticationToken.setDetails(
-	                     new WebAuthenticationDetailsSource().buildDetails(request));
-	             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-	         }
-	     } catch (AuthenticationException ex) {
-	         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-	         response.getWriter().write(ex.getMessage());
-	         return;
-	     }
+		 String requestUrl = request.getRequestURI();
+		 if(requiresAuthentication(requestUrl)) {		 
+			 try {
+				 String token = getTokenFromHeader(request);
+				 boolean check = jwtGenerator.checkValidToken(token);
+				 if (StringUtils.hasText(token) && check) {
+					 String username = jwtGenerator.getUserNameByJWTToken(token);
+					 
+					 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+					 
+					 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+							 new UsernamePasswordAuthenticationToken(username, null, userDetails.getAuthorities());
+					 
+					 usernamePasswordAuthenticationToken.setDetails(
+							 new WebAuthenticationDetailsSource().buildDetails(request));
+					 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+				 }
+			 } catch (AuthenticationException ex) {
+				 response.setStatus(HttpStatus.UNAUTHORIZED.value());
+				 response.getWriter().write(ex.getMessage());
+				 return;
+			 }
+		 }
 
 	     filterChain.doFilter(request, response);
 	 }
@@ -64,5 +67,11 @@ public class JWTFIlterChain extends OncePerRequestFilter{
 		
 		return "";
 	}
+	
+	 private boolean requiresAuthentication(String requestURI) {
+	        return requestURI.startsWith("/api/v1/watchlist/") || 
+	        		requestURI.startsWith("/api/v1/watch-history/") || 
+	        		requestURI.startsWith("/api/v1/user/");
+	    }
 
 }

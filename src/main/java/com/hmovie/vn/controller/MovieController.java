@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -174,7 +177,7 @@ public class MovieController {
     }
     
     @GetMapping("/search")
-    public ResponseEntity<Page<Movie>> searchMovies(
+    public ResponseEntity<PagedModel<MovieResponse>> searchMovies(
             @RequestParam(defaultValue = "") String query,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer limit) {
@@ -182,8 +185,18 @@ public class MovieController {
     	if (page < 0 || limit <= 0) {
             throw new RuntimeException("Invalid page or limit parameters.");
         }
+    	Page<Movie> movies = movieService.findMovieByQueryWithPaginate(query, page, limit);
+    	List<MovieResponse> movieResponses = movieConvert.moviesConvertToMovieResponses(movies.getContent());
     	
-        return ResponseEntity.ok(movieService.findMovieByQueryWithPaginate(query, page, limit));
+    	Page<MovieResponse> movieResponsePage = new PageImpl<>(
+                movieResponses,
+                PageRequest.of(page-1, limit),
+                movies.getTotalElements()
+        );
+    	
+    	PagedModel<MovieResponse> pagedModel = new PagedModel<MovieResponse>(movieResponsePage);
+    	
+        return ResponseEntity.ok(pagedModel);
     }
    
     

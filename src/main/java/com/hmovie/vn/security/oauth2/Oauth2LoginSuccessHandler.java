@@ -1,6 +1,9 @@
 package com.hmovie.vn.security.oauth2;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -52,18 +55,10 @@ public class Oauth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         }
         
 		String token = jwtGenerator.gennerateToken(authentication);
-
-       
-        Cookie cookie = new Cookie("token", token);
-        cookie.setHttpOnly(false); 
-        cookie.setSecure(true); 
-        cookie.setPath("/"); 
-        cookie.setMaxAge(86400); 
-      
-        response.addCookie(cookie);
-
-       
-        String redirectUrl = "http://localhost:3000/";
+		
+	    String encodedToken = URLEncoder.encode(Base64.getEncoder().encodeToString(token.getBytes()), StandardCharsets.UTF_8.toString());
+		
+        String redirectUrl = "https://hmovie1005.netlify.app" + "?t=" + encodedToken;
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
 		super.onAuthenticationSuccess(request, response, authentication);
 		

@@ -46,7 +46,7 @@ public class WatchListController {
 		return ResponseEntity.ok("Add movie to watch list success!");
 	}
 	
-	@GetMapping
+	@GetMapping("/user")
 	public ResponseEntity<WatchListResponse> getWatchListByAuthenticatedUser(){
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = userService.findUserByEmail(email);

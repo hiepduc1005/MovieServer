@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hmovie.vn.entity.Movie;
+import com.hmovie.vn.entity.User;
 import com.hmovie.vn.entity.WatchHistory;
 import com.hmovie.vn.repository.WatchHistoryRepository;
 import com.hmovie.vn.service.WatchHistoryService;
@@ -44,9 +45,10 @@ public class DefaultWatchHistoryService implements WatchHistoryService {
 	}
 
 	@Override
-	@Transactional
-	public WatchHistory findByMovie(Movie movie) {
-		return watchHistoryRepository.findByMovie(movie);
+	@Transactional(readOnly = true)
+	public WatchHistory findByMovieAndUser(Movie movie, User user) {
+		
+		return watchHistoryRepository.findByMovieAndUser(movie, user);
 	}
 
 }

@@ -13,8 +13,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "user_info")
 public class User {
 
 	@Id
@@ -45,9 +47,6 @@ public class User {
 	
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<WatchHistory> watchHistories;
-	
-	
-
 	
 
 	public List<WatchHistory> getWatchHistory() {

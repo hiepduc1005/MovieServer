@@ -38,7 +38,7 @@ public class WatchHistoryController {
 		User user = userService.findUserById(watchHistoryCreateRequest.getUserId());
 		Movie movie = movieService.findById(watchHistoryCreateRequest.getMovieId());
 		
-		WatchHistory watchHistory = watchHistoryService.findByMovie(movie);
+		WatchHistory watchHistory = watchHistoryService.findByMovieAndUser(movie,user);
 		
 		if(watchHistory == null) {
 			WatchHistory newWatchHistory = new WatchHistory();
@@ -47,12 +47,14 @@ public class WatchHistoryController {
 			newWatchHistory.setUser(user);
 			
 			newWatchHistory = watchHistoryService.createWatchHistory(newWatchHistory);
-			
+			System.out.println("hello");
+			System.out.println(newWatchHistory.getId());
 			return ResponseEntity.ok(watchHistoryConvert.watchHistoryConvertToWatchHistoryResponse(newWatchHistory));		
 		}
 		
 		watchHistory.setEpisodeNumber(watchHistoryCreateRequest.getEpisodeNumber());
 		watchHistory = watchHistoryService.update(watchHistory);
+		
 		
 		return ResponseEntity.ok(watchHistoryConvert.watchHistoryConvertToWatchHistoryResponse(watchHistory));
 	}

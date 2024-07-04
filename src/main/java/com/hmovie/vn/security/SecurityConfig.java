@@ -20,7 +20,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.hmovie.vn.security.oauth2.CustomOauth2UserService;
 import com.hmovie.vn.security.oauth2.Oauth2LoginSuccessHandler;
 
-import io.github.cdimascio.dotenv.Dotenv;
 
 @Configuration
 @EnableWebSecurity
@@ -52,7 +51,7 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/api/v1/watchlist/**","/api/v1/watch-history/**").authenticated()
+						.requestMatchers("/api/v1/watchlist/**","/api/v1/watch-history/**","/api/v1/user/**").authenticated()
 						.anyRequest().permitAll())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -79,9 +78,6 @@ public class SecurityConfig {
 		};
 	}
 
-	@Bean
-	public Dotenv dotenv() {
-		return Dotenv.configure().load();
-	}
+	
 
 }
