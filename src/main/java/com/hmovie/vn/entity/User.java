@@ -30,6 +30,7 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private Provider provider;
 	
+	@Column(name = "avatar_url", length = 500)
 	private String avatarUrl;
 
 	@Column(name = "create_at")

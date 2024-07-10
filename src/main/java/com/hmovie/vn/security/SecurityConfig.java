@@ -57,8 +57,8 @@ public class SecurityConfig {
 
 		http.oauth2Client(Customizer.withDefaults());
 		http.oauth2Login(oauth -> oauth.userInfoEndpoint(userInfo -> userInfo.userService(customOauth2UserService))
-				.loginPage("http://localhost:3000/login")
-				.successHandler(oauth2LoginSuccessHandler));
+				.successHandler(oauth2LoginSuccessHandler)
+				.loginPage("https://hmovie1005.netlify.app/login"));
 
 		http.addFilterBefore(jwtfIlterChain(), UsernamePasswordAuthenticationFilter.class);
 

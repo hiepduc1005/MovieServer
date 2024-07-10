@@ -12,9 +12,23 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             authorization-grant-type: authorization_code
             client-name: Google
+          facebook:
+            client-id: 446000254930130
+            client-secret: 81d5c1b5fa1747ea9e6a6b36eb0c62dc
+            scope:
+              - email
+              - public_profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            client-name: Facebook
         provider:
           google:
             authorization-uri: https://accounts.google.com/o/oauth2/auth
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
             user-name-attribute: sub
+          facebook:
+            authorization-uri: https://www.facebook.com/v11.0/dialog/oauth
+            token-uri: https://graph.facebook.com/v11.0/oauth/access_token
+            user-info-uri: https://graph.facebook.com/me?fields=id,name,email,picture
+            user-name-attribute: id

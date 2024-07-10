@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,7 +18,6 @@ import com.hmovie.vn.security.JWTGenerator;
 import com.hmovie.vn.service.UserService;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -39,7 +39,21 @@ public class Oauth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 		String email = oauth2User.getEmail();
 		String username = oauth2User.getName();
 		Provider provider = Provider.valueOf(auth2AuthenticationToken.getAuthorizedClientRegistrationId().toUpperCase());
-		String avatarUrl = oauth2User.getAttribute("picture");
+		
+		String avatarUrl = null;
+		 if (provider == Provider.FACEBOOK) {
+	            @SuppressWarnings("unchecked")
+				Map<String, Object> pictureObj = (Map<String, Object>) oauth2User.getAttribute("picture");
+	            if (pictureObj != null) {
+	                @SuppressWarnings("unchecked")
+					Map<String, Object> data = (Map<String, Object>) pictureObj.get("data");
+	                if (data != null) {
+	                    avatarUrl = (String) data.get("url");
+	                }
+	            }
+	        } else if (provider == Provider.GOOGLE) {
+	            avatarUrl = oauth2User.getAttribute("picture");
+	    }
 		
 		User user = userService.findUserByEmail(email);
         if (user == null) {
@@ -50,7 +64,7 @@ public class Oauth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
             user.setProvider(provider);
             userService.createUser(user);
         } else {
-            user.setAvatarUrl(avatarUrl); // Cập nhật avatar nếu người dùng đã tồn tại
+            user.setAvatarUrl(avatarUrl); 
             userService.updateUser(user);
         }
         
